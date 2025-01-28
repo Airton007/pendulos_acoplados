@@ -1,5 +1,5 @@
 """
-    Programa para os gráficos para o caso de dois pêndulos
+    Programa para a análise gráfica para o caso de dois pêndulos
 """
 #> partes separadas por #%% podem ser executadas separadamente num kernel jupyter
 #%%
@@ -34,12 +34,21 @@ if data_opostas.shape[1] != 5:
 #%%
 #> Funções para os plots
 def plot_coordenadas( data , file_path ):
+    """
+    Função que recebe o conjunto de dados de interesse e plota os gráficos das coordenadas
+
+    Args:
+        data =: conjunto de dados de interesse
+        file_path =: caminho da imagem gerada + extensão
+
+    Retorna:
+        Não retorna nenhuma variável, apenas padroniza uma subrotina para plotar os gráficos das coordenadas    
+    """
     time = data[:, 0]  # Primeira coluna é o tempo
     x_1 = data[ :, 1 ] ; v_1 = data[ :, 3 ]
     x_1_max = x_1.max() ; v_1_max = v_1.max()
     x_2 = data[ :, 2 ] ; v_2 = data[ :, 4 ]
     x_2_max = x_1.max() ; v_2_max = v_1.max()
-
     fig, ax = plt.subplots( nrows=4 , ncols=1 , figsize=( 12, 18 ) ) 
     ax = ax.flatten() # Transforma o ax em um array 1D para facilitar
     ax[0].plot( time , x_1/x_1_max , label=r'$x_1$' , color='blue' )
@@ -66,13 +75,22 @@ def plot_coordenadas( data , file_path ):
     fig.savefig( file_path , dpi=300 , bbox_inches='tight' )
 
 def plot_espaço_de_fase( data , file_path ):
-    time = data[:, 0]  # Primeira coluna é o tempo
+    """
+    Função que recebe o conjunto de dados de interesse e plota os perfis do espaço de fase
+
+    Args:
+        data =: conjunto de dados de interesse
+        file_path =: caminho da imagem gerada + extensão
+
+    Retorna:
+        Não retorna nenhuma variável, apenas padroniza uma subrotina para plotar os perfis do espaço de fase
+    """
     x_1 = data[ :, 1 ] ; v_1 = data[ :, 3 ]
     x_1_max = x_1.max() ; v_1_max = v_1.max()
     x_2 = data[ :, 2 ] ; v_2 = data[ :, 4 ]
     x_2_max = x_1.max() ; v_2_max = v_1.max()
     fig, ax = plt.subplots( nrows=2 , ncols=2 , figsize=( 12, 12 ) ) 
-    ax = ax.flatten() # Transforma o ax em um array 1D para facilitar a iteração
+    ax = ax.flatten()
     ax[0].plot( x_1/x_1_max , v_1/v_1_max , color='blue' )
     ax[1].plot( x_2/x_2_max , v_2/v_2_max , color='orange' )
     ax[2].plot( (x_1/x_1_max+x_2/x_2_max) , (v_1/v_1_max+v_2/v_2_max) , color='limegreen' )
@@ -89,11 +107,20 @@ def plot_espaço_de_fase( data , file_path ):
     fig.savefig( file_path , dpi=300 , bbox_inches='tight' )
 
 def plot_energia( data , file_path ):
-    time = data[:, 0]  # Primeira coluna é o tempo
+    """
+    Função que recebe o conjunto de dados de interesse e plota o gráfico da energia
+
+    Args:
+        data =: conjunto de dados de interesse
+        file_path =: caminho da imagem gerada + extensão
+
+    Retorna:
+        Não retorna nenhuma variável, apenas padroniza uma subrotina para plotar o gráfico da energia
+    """
+    time = data[:, 0] 
     x_1 = data[ :, 1 ] ; v_1 = data[ :, 3 ]
-    x_1_max = x_1.max() ; v_1_max = v_1.max()
     x_2 = data[ :, 2 ] ; v_2 = data[ :, 4 ]
-    x_2_max = x_1.max() ; v_2_max = v_1.max()
+    # As constantes abaixo são cópias das usadas no programa que gera os dados
     y_1 = 10 - np.sqrt(100-x_1**2)
     y_2 = 10 - np.sqrt(100-x_2**2)
     U = (x_2-x_1)**2
@@ -113,14 +140,19 @@ def plot_energia( data , file_path ):
     ax.set_ylabel( 'Energia [u.a.]' , fontsize=14 ) 
     ax.set_title(f'Energia do sistema' , fontsize=14 )
     fig.savefig( file_path , dpi=300 , bbox_inches='tight' )
+
 #%%
 #> Caso das posições iniciais iguais
-plot_coordenadas( data_iguais , 'graph_coordenadas_iguais.pdf' )
+plot_coordenadas( data_iguais , 'rel/graph_coordenadas_iguais.pdf' )
+
 #%%
 #> Caso das posições iniciais opostas
-plot_coordenadas( data_opostas , 'graph_coordenadas_opostas.pdf')
+plot_coordenadas( data_opostas , 'rel/graph_coordenadas_opostas.pdf')
+
 # %%
 #> Caso das posições iniciais diferentes
-plot_coordenadas( data_diferentes , 'graph_coordenadas_diferentes.pdf' )
-plot_espaço_de_fase( data_diferentes , 'graph_espaços_de_fase.pdf' )
-plot_energia( data_diferentes , 'graph_energia.pdf' )
+plot_coordenadas( data_diferentes , 'rel/graph_coordenadas_diferentes.pdf' )
+# Para esse caso vale a pena olhar para o espaço de fase das coordenadas
+plot_espaço_de_fase( data_diferentes , 'rel/graph_espaços_de_fase.pdf' )
+# Conservação da energia e transmissão de energia de um para outro pêndulo
+plot_energia( data_diferentes , 'rel/graph_energia.pdf' )

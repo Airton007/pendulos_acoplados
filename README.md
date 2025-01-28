@@ -33,6 +33,7 @@ Para mais detalhes sobre os gráficos gerados, consulte o arquivo `README.md` no
 - **Comprimento da corda (l):** 1.0
 - **Passo de tempo (h):** 0.001
 - **Número de passos (N):** 10.000
+
 Os valores foram escolhidos de tal forma que o fenômeno de batimentos ficasse evidente.
 
 #### Parâmetros Modificáveis

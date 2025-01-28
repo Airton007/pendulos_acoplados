@@ -179,8 +179,48 @@ $q_2$ é a posição de $x_1$ relativa à massa 2.
 \newpage
 \section{ Implementação }
 
+    O programa foi desenvolvido em Fortran, utilizando o método de Runge-Kutta de quarta ordem (RK4) para a integração numérica das equações diferenciais do sistema, foi escolhido devido à sua precisão e estabilidade em simulações numéricas de sistemas dinâmicos.
     
-\newpage
+    A simulação foi dividida em vários arquivos de programas, sendo a parte de fortran composta pelo programa principal \texttt{osc\_acopladas\_n.f90} e módulo \texttt{mod\_runge\_kutta.f90}, já a parte de análise gráfica foi desenvolvida em python, o qual e composto por \texttt{graph\_2\_pendulos.py} e \texttt{graph\_n\_pendulos.py} fazendo uso assim das bibliotecas \textit{numpy} e \textit{matplotlib}. A estrutura básica consiste nos seguintes componentes:
+
+\begin{itemize}
+
+    \item \textbf{Programa principal (\texttt{osc\_acopladas\_n})}: Configura os parâmetros iniciais, como número de pêndulos ($N$), as condições iniciais e as constantes físicas do sistema, conforme descrito anteriormente. Em seguida, chama o módulo \texttt{runge\_kutta} que vai fazer a integração numérica das equações diferenciais do sistema para péndulos acoplados. O código inclui uma interface que solicita ao usuário o número de pêndulos e a condição inicial a ser escolhida. Após as escolhas serem feitas, o programa termina de simular gerando os resultados, que são armazenados em arquivos de saída no formato \texttt{.dat}. Mais informações são descrita no arquivo \texttt{osc\_acopladas\_n.f90}.
+
+    \item \textbf{Função auxiliar (\texttt{derivada\_z})}: Inclue as equações diferenciais acopladas (\ref{eq::pendulos_acoplados}), adaptadas para o cálculo de  $N$. É esta parte do código que pode ser substituída, pois, possui a flexibilidade de ser adaptada para outros sistemas descritos por EDOs, desde que possam ser reduzidos a sistemas de primeira ordem.
+
+    \item \textbf{Módulo (\texttt{runge\_kutta})}: O módulo é composto pela função principal, \texttt{rk4\_multi}, responsável por calcular a evolução do sistema a cada passo de tempo, utilizando os coeficientes intermediários (\(k_1, k_2, k_3, k_4\)) para estimar o próximo estado do sistema. A função de derivadas, fornecida pelo usuário, define as taxas de variação das variáveis, e a solução numérica é obtida pela combinação ponderada desses coeficientes. Aqui destaca-se a importância da criação do módulo, pois ele torna o desenvolvimento mais flexível, permitindo fácil adaptação a diferentes sistemas dinâmicos e necessidades específicas de modelagem.
+\end{itemize}
+
+\subsection{Método de Runge-Kutta}
+
+As equações diferenciais (\ref{eq::pendulos_acoplados}) foram reformuladas em termos de um sistema de primeira ordem. Seja $\mathbf{z}$ o vetor de estado, composto pelas coordenadas e suas derivadas, temos:
+
+\begin{equation}
+\mathbf{z} = \begin{bmatrix} x_1 \\ \dot{x}_1 \\ x_2 \\ \dot{x}_2 \end{bmatrix},
+\end{equation}
+com as equações diferenciais dadas por:
+\begin{equation}
+\begin{cases}
+\dot{x}_1 = \dot{z}_2, \\
+\ddot{x}_1 = -\omega_0^2 x_1 + \frac{k}{m}(x_2 - x_1), \\
+\dot{x}_2 = \dot{z}_4, \\
+\ddot{x}_2 = -\omega_0^2 x_2 + \frac{k}{m}(x_1 - x_2).
+\end{cases}
+\end{equation}
+
+Essas equações são resolvidas iterativamente, atualizando o vetor $\mathbf{z}$ a cada passo de tempo $\Delta t=h$.
+
+\subsection{Saída e Visualização dos Resultados}
+
+Os resultados da simulação são gravados em arquivos de texto, permitindo sua posterior análise gráfica com ferramentas como o \textit{Matplotlib} no Python. A saída inclui:
+\begin{itemize}
+    \item Coordenadas naturais ($x_1, x_2$) e normais ($q_1, q_2$) ao longo do tempo.
+    \item Perfis do espaço de fase para as coordenadas naturais e normais.
+    \item Distribuição de energia entre as massas ao longo do tempo.
+\end{itemize}
+
+O código está estruturado para ser escalável, permitindo simular sistemas com qualquer número $N$ de pêndulos. A próxima etapa consiste em estender a análise para o caso de $N > 2$, explorando os modos normais de sistemas mais complexos.
 \section{ Resultados }
 
     A análise gráfica dos resultados foi feita no Python, com auxílio do pacote Matplotlib. Todos os dados foram normalizados e são dados em termos de unidades arbitrárias.

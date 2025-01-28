@@ -17,8 +17,8 @@ program osc_acopladas_n
      character(len=50) :: nome_arquivo
    
      ! Parâmetros do problema
-     real(kind=dp), parameter :: m = 1.0_dp, k = 1.0_dp  ! Massa e constante elástica
-     real(kind=dp), parameter :: g = 9.81_dp, l = 1.0_dp  ! Gravidade e comprimento da corda
+     real(kind=dp), parameter :: m = 1.0_dp, k = 10.0_dp  ! Massa e constante elástica
+     real(kind=dp), parameter :: g = 1000.0_dp, l = 10.0_dp  ! Gravidade e comprimento da corda
    
      ! Frequência natural do sistema
      omega0 = sqrt(g / l)
@@ -44,8 +44,8 @@ program osc_acopladas_n
    
      ! Escolha das condições iniciais
      print*, 'Escolha as condições iniciais:'
-     print*, '1. Todas as posições iguais'
-     print*, '2. Posições alternadas (opostas)'
+     print*, '1. Todas as posições iguais - MHS do centro de massa '
+     print*, '2. Posições alternadas (opostas) - MHS das posições relativas'
      print*, '3. Posições diferentes'
      read*, i
    
@@ -63,8 +63,8 @@ program osc_acopladas_n
 
      elseif (i == 3) then
         ! Condições iniciais: posições diferentes
-        z(1:N_pendulos) = [(1.0_dp * j, j=1, N_pendulos)]
-        z(N_pendulos+1:d) = 0.0_dp
+        z(1:N_pendulos) = [(.01_dp * (j-1), j=1, N_pendulos)]
+        z(N_pendulos+1:d) = [(1.0_dp  * (j-N_pendulos-1)* (-1)**j, j=N_pendulos+1, d)]
         nome_arquivo = 'pend_acop_pos_diferentes.dat'
      else
         print*, 'Opção inválida.'
@@ -72,8 +72,11 @@ program osc_acopladas_n
      end if
    
      ! Abertura de arquivo para salvar resultados
-     open(newunit=arquivo, file=nome_arquivo, status="replace")
-   
+     if ( N_pendulos==2 ) then
+      open(newunit=arquivo, file='data/2/'//nome_arquivo, status="replace")
+     else
+      open(newunit=arquivo, file='data/'//nome_arquivo, status="replace")
+     end if
      ! Loop principal para integração numérica usando Runge-Kutta
      do i = 0, N-1
          t = t0 + i * h

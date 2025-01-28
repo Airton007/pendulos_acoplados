@@ -36,17 +36,25 @@ v_j = data[:, num_pendulums + 1:]
 q_1 = x_j[:, :].sum(axis=1)
 p_1 = v_j[:, :].sum(axis=1)
 
-#%%
+#%% 
 #> Plot das coordenadas dos pêndulos
-fig, ax = plt.subplots( nrows=2 , ncols=1 , figsize=( 12 , 9 ) )
+fig, ax = plt.subplots( nrows=4 , ncols=1 , figsize=( 12 , 18 ) )
 ax = ax.flatten()
 for i in range(num_pendulums):
     ax[0].plot(time, x_j[:, i]/x_j[:, i].max() , label=f'Pêndulo {i + 1}')
 ax[0].legend( fontsize=12 )
-ax[1].plot( time , q_1/q_1.max() , color='limegreen' )
+for i in range(num_pendulums):
+    ax[1].plot(time, v_j[:, i], label=f'Pêndulo {i + 1}')
+ax[1].legend( fontsize=12 )
+ax[2].plot( time , q_1/q_1.max() , color='limegreen' )
+ax[3].plot( time , p_1/p_1.max() , color='firebrick' )
 ax[0].grid( )
 ax[1].grid( )
-ax[1].set_xlabel('Tempo [u.a.]' , fontsize=14 )
+ax[2].grid( )
+ax[3].grid( )
+ax[3].set_xlabel('Tempo [u.a.]' , fontsize=14 )
 ax[0].set_ylabel('Coordenadas naturais [u.a.]' , fontsize=14 ) ; ax[0].set_title('Coordenadas naturais' , fontsize=14 )
-ax[1].set_ylabel('Coordenada normal [u.a.]' , fontsize=14 ) ; ax[1].set_title('Coordenada normal do centro de massa' , fontsize=14 )
+ax[1].set_ylabel('Velocidades naturais [u.a.]' , fontsize=14 ) ; ax[1].set_title('Velocidades naturais' , fontsize=14 )
+ax[2].set_ylabel('Coordenada normal [u.a.]' , fontsize=14 ) ; ax[2].set_title('Coordenada normal do centro de massa' , fontsize=14 )
+ax[3].set_ylabel('Velocidade normal [u.a.]' , fontsize=14 ) ; ax[3].set_title('Velocidade da coordenada normal do centro de massa' , fontsize=14 )
 fig.savefig( 'rel/graph_coordenadas_pendulos.pdf' , dpi=300 , bbox_inches='tight' )

@@ -26,13 +26,14 @@ Para mais detalhes sobre os gráficos gerados, consulte o arquivo `README.md` no
 
 ### Configurações do Sistema
 
-#### Parâmetros Fixos
-- **Massa (m):** 10.0 kg
-- **Constante elástica (k):** 10.0 N/m
-- **Gravidade (g):** 1000.0m/s²
-- **Comprimento da corda (l):** 1.0 m
-- **Passo de tempo (h):** 0.001 s
+#### Parâmetros Fixos (dados em unidades arbitrárias)
+- **Massa (m):** 10.0 
+- **Constante elástica (k):** 10.0 
+- **Gravidade (g):** 1000.0
+- **Comprimento da corda (l):** 1.0
+- **Passo de tempo (h):** 0.001
 - **Número de passos (N):** 10.000
+Os valores foram escolhidos de tal forma que o fenômeno de batimentos ficasse evidente.
 
 #### Parâmetros Modificáveis
 Os parâmetros físicos podem ser alterados diretamente no código, por exemplo:

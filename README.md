@@ -157,11 +157,6 @@ Arquivo de saída: data/pend_acop_pos_iguais.dat
 - **Condições iniciais personalizadas:** Adicione novas opções no menu de entrada para simular diferentes configurações iniciais.
 - **Plotagem:** Integre scripts em Python ou Gnuplot para visualizar os resultados da simulação diretamente.
 
-### Estatísticas Adicionais
-Os dados gerados podem ser analisados para estatísticas básicas, como:
-- Amplitude de movimento dos pêndulos.
-- Frequências dominantes via análise espectral.
-
 ## Observações
 
 Certifique-se de que o diretório `data/` exista antes de executar o programa. Caso contrário, crie-o para evitar erros de saída:

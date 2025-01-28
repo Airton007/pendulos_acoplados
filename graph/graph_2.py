@@ -49,6 +49,8 @@ def plot_coordenadas( data , file_path ):
     x_1_max = x_1.max() ; v_1_max = v_1.max()
     x_2 = data[ :, 2 ] ; v_2 = data[ :, 4 ]
     x_2_max = x_1.max() ; v_2_max = v_1.max()
+    q_1 = x_1 + x_2 ; vq1 = v_1 + v_2
+    q_2 = x_1 - x_2 ; vq2 = v_1 - v_2
     fig, ax = plt.subplots( nrows=4 , ncols=1 , figsize=( 12, 18 ) ) 
     ax = ax.flatten() # Transforma o ax em um array 1D para facilitar
     ax[0].plot( time , x_1/x_1_max , label=r'$x_1$' , color='blue' )
@@ -57,11 +59,11 @@ def plot_coordenadas( data , file_path ):
     ax[1].plot( time , v_1/v_1_max , label=r'$\dot{x}_1$' , color='blue' )
     ax[1].plot( time , v_2/v_2_max , '--' , label=r'$\dot{x}_2$' , color='orange' )
     ax[1].legend( fontsize=12 )
-    ax[2].plot( time , (x_1/x_1_max+x_2/x_2_max) , label=r'$q_1$' , color='limegreen' )     
-    ax[2].plot( time , (x_1/x_1_max-x_2/x_2_max) , '--' , label=r'$q_2$' , color='firebrick' )
+    ax[2].plot( time , q_1/q_1.max() , label=r'$q_1$' , color='limegreen' )     
+    ax[2].plot( time , q_2/q_2.max() , '--' , label=r'$q_2$' , color='firebrick' )
     ax[2].legend( fontsize=12 )
-    ax[3].plot( time , (v_1/v_1_max+v_2/v_2_max) , label=r'$\dot{q}_1$' , color='limegreen' ) 
-    ax[3].plot( time , (v_1/v_1_max-v_2/v_2_max) , '--' , label=r'$\dot{q}_2$' , color='firebrick' )
+    ax[3].plot( time , vq1/vq1.max() , label=r'$\dot{q}_1$' , color='limegreen' ) 
+    ax[3].plot( time , vq2/vq2.max() , '--' , label=r'$\dot{q}_2$' , color='firebrick' )
     ax[3].legend( fontsize=12 )
     ax[0].grid( )
     ax[1].grid( )
@@ -89,12 +91,14 @@ def plot_espaço_de_fase( data , file_path ):
     x_1_max = x_1.max() ; v_1_max = v_1.max()
     x_2 = data[ :, 2 ] ; v_2 = data[ :, 4 ]
     x_2_max = x_1.max() ; v_2_max = v_1.max()
+    q_1 = x_1 + x_2 ; vq1 = v_1 + v_2
+    q_2 = x_1 - x_2 ; vq2 = v_1 - v_2
     fig, ax = plt.subplots( nrows=2 , ncols=2 , figsize=( 12, 12 ) ) 
     ax = ax.flatten()
     ax[0].plot( x_1/x_1_max , v_1/v_1_max , color='blue' )
     ax[1].plot( x_2/x_2_max , v_2/v_2_max , color='orange' )
-    ax[2].plot( (x_1/x_1_max+x_2/x_2_max) , (v_1/v_1_max+v_2/v_2_max) , color='limegreen' )
-    ax[3].plot( (x_1/x_1_max-x_2/x_2_max) , (v_1/v_1_max-v_2/v_2_max) , color='firebrick' )
+    ax[2].plot( q_1/q_1.max() , vq1/vq1.max() , color='limegreen' )
+    ax[3].plot( q_2/q_2.max() , vq2/vq2.max() , color='firebrick' )
     ax[0].grid( )
     ax[1].grid( )
     ax[2].grid( )
